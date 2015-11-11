@@ -3,21 +3,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>angular-formly</title>
+    <title>My Survey</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css">
 </head>
 <body ng-app="formlyApp" ng-controller="MainController as vm">
 
-    <div class="container col-md-4 col-md-offset-4">
-        
-<form novalidate>
-    <h1>Rent-a-Car, eh?</h1>
-    <formly-form model="vm.rental" fields="vm.rentalFields" form="vm.rentalForm">
-        <button type="submit" class="btn btn-primary" ng-disabled="vm.rentalForm.$invalid">Submit</button>
-    </formly-form>
-</form
-    </div>  
+<div class="container col-md-8 col-md-offset-2">
+
+    <form novalidate name="vm.form1" onsubmit="return stuff();">
+        <h1>Survey of My Survey</h1>
+        <formly-form model="vm.survey" fields="vm.surveyFields" form="vm.surveyForm">
+            <div class="text-center"><button type="submit" class="btn btn-primary" ng-disabled="vm.form1.$invalid">Submit</button></div>
+        </formly-form>
+    </form
+</div>
 
 </body>
 
@@ -26,9 +26,10 @@
     <script src="node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-formly/dist/formly.js"></script>
     <script src="node_modules/angular-formly-templates-bootstrap/dist/angular-formly-templates-bootstrap.js"></script>
+    <script src="node_modules/jquery/dist/jquery.js"></script>
 
     <!-- Application Scripts -->
     <script src="app.js"></script>
     <script src="scripts/MainController.js"></script>
-    <script src="scripts/province.js"></script>
+    <script src="scripts/answers.js"></script>
 </html>

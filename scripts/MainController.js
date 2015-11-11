@@ -6,117 +6,75 @@
         .module('formlyApp')
         .controller('MainController', MainController);
 
-    function MainController(province) {
-
+    function MainController(answers) {
     var vm = this;
+    vm.survey = {};
+    vm.options = {};
 
-    // The model object that we reference
-    // on the  element in index.html
-    vm.rental = {};
-    
-    // An array of our form fields with configuration
-    // and options set. We make reference to this in
-    // the 'fields' attribute on the  element
-    vm.rentalFields = [
+    vm.surveyFields = [
         {
-            key: 'first_name',
+            key: 'first_question',
             type: 'input',
             templateOptions: {
                 type: 'text',
-                label: 'First Name',
-                placeholder: 'Enter your first name',
+                label: "Here's where I'd put the first question",
+                placeholder: "And here's where I'd like the first answer to go.",
                 required: true
             }
         },
         {
-            key: 'last_name',
+            key: 'second_question',
             type: 'input',
             templateOptions: {
                 type: 'text',
-                label: 'Last Name',
-                placeholder: 'Enter your last name',
+                label: "And here's the spot for the second question",
+                placeholder: "And here's where the second answer goes. Both of them are required",
                 required: true
             }
         },
         {
-            key: 'email',
+            key: 'phonenumber',
             type: 'input',
+            className: "number",
             templateOptions: {
-                type: 'email',
-                label: 'Email address',
-                placeholder: 'Enter email',
-                required: true
-            }
+                label: 'Please enter your phone number',
+                placeholder: 'Numbers only please! Typing in characters is forbidden!',
+                type: 'number',
+            },
         },
         {
-        	key: 'under25',
-        	type: 'checkbox',
-        	templateOptions: {
-            	label: 'Are you under 25?',
-        	},
-        	// Hide this field if we don't have
-        	// any valid input in the email field
-        	hideExpression: '!model.email'
-    	},
-    	{
-        	key: 'province',
-        	type: 'select',
-        	templateOptions: {
-            	label: 'Province/Territory',
-            	// Call our province service to get a list
-            	// of provinces and territories
-            	options: province.getProvinces()
-        	},
-        	hideExpression: '!model.email'
-    	},
-    	{
-        	key: 'insurance',
-        	type: 'input',
-        	templateOptions: {
-            	label: 'Insurance Policy Number',
-            	placeholder: 'Enter your insurance policy number'
-        	},
-        	hideExpression: '!model.under25 || !model.province',
-    	},
-    	{
-        	key: 'license',
-        	type: 'input',
-        	templateOptions: {
-            	label: 'Driver\'s License Number',
-            	placeholder: 'Enter your drivers license number'
-        	},
-        	hideExpression: '!model.province',
-        	validators: {
-           		driversLicense: function($viewValue, $modelValue, scope) {
-                	var value = $modelValue || $viewValue;
-                	if(value) {
-                    return validateDriversLicence(value)
-                	}
-           		}
-        	},
-        	expressionProperties: {
-            // We currently only have a driver's license pattern for Ontario
-            // so we need to disable this field if we've picked a province/territory
-            // other than Ontario
-            	'templateOptions.disabled': function($viewValue, $modelValue, scope) {
-                	if(scope.model.province === 'ontario') {
-                    	return false;
-                	}
-                	return true;
-            	}
-        	}
-    	},
+            key: 'radiooptions',
+            type: 'radio',
+            templateOptions: {
+                label: "Do you like radio buttons?",
+                options: [
+                    {
+                        "name": "I love them!",
+                        "value": "love"
+                    },
+                    {
+                        "name": "Eh.",
+                        "value": "eh"
+                    },
+                    {
+                        "name": "I hate them!",
+                        "value": "hate"
+                    }
+                ]
+            },
+        },
+        {
+            key: 'rate',
+            type: 'select',
+            templateOptions: {
+                label: 'How would you rate this survey?',
+                options: answers.getAnswers(),
+                required: true
+            },
+            hideExpression: '!model.second_question || !model.first_question',
+        }
     ];
 }
-
-   // Tests the input based on a helpful regular expression
-    // gratefully borrowed from jQuery.formance by Omar Shammas
-    // https://github.com/omarshammas/jquery.formance
-    function validateDriversLicence(value) {
-        return /[A-Za-z]\d{4}[\s|\-]*\d{5}[\s|\-]*\d{5}$/.test(value);
-    }
-     
-
 
 })();
 
